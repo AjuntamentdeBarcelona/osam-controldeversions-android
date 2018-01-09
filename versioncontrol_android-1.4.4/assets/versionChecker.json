@@ -1,0 +1,29 @@
+{
+  "version": "2.1.1",
+  "comparisonMode": "0",
+  "minSystemVersion": "5.0",
+  "title": {
+    "es": "Título de la alerta",
+    "cat": "Títol de la alerta",
+    "en": "Alert title"
+  },
+  "message": {
+    "es": "Prueba en castellano.",
+    "cat": "Prova en català.",
+    "en": "Test in english."
+  },
+  "okButtonTitle": {
+    "es": "Vale",
+    "cat": "Val",
+    "en": "Ok"
+  },
+  "cancelButtonTitle": {
+    "es": "Cancelar",
+    "cat": "Cancel·lar",
+    "en": "Cancel"
+  },
+  "okButtonActionURL": "http://www.apple.com <http://www.apple.com/> "
+}
+
+
+

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_wrong_version_name_cancel">Cancelar</string>
+    <string name="error_wrong_version_name_desc">Tu aplicación tiene un número de versión incorrecto.</string>
+    <string name="error_wrong_version_name_title">Número de versión incorrecto</string>
+</resources>
