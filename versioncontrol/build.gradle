@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'maven'
 apply plugin: 'android-apt'
 
 android {
@@ -20,45 +19,6 @@ android {
     }
 
 }
-
-// get version name
-def getVersionName() {
-    if(hasProperty('snapshot') && property('snapshot') == true) {
-        // property value doesn't matter
-        println "********* deploying snapshot **********";
-        return android.defaultConfig.versionName + "-SNAPSHOT";
-    } else {
-        println "********* deploying release **********";
-        return android.defaultConfig.versionName;
-    }
-}
-
-uploadArchives {
-    repositories {
-        // the maven plugin features this deployer
-        mavenDeployer {
-            // releases repository
-            repository(url: T21_NEXUS_URL + T21_NEXUS_REPO_RELEASE) {
-                authentication(userName: T21_NEXUS_USERNAME, password: T21_NEXUS_PASSWORD)
-            }
-            // snapshot repository - when version name contains '*-SNAPSHOT' this repository is used
-            snapshotRepository(url: T21_NEXUS_URL + T21_NEXUS_REPO_SNAPSHOT) {
-                authentication(userName: T21_NEXUS_USERNAME, password: T21_NEXUS_PASSWORD)
-            }
-
-            // pom project information
-            pom.project {
-                version getVersionName()
-                groupId 'com.tempos21.versioncontrol'
-                artifactId 'versioncontrol_android'
-                name 'Version Control Module'
-                packaging 'aar'
-            }
-        }
-    }
-}
-
-task install(dependsOn: uploadArchives)
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
