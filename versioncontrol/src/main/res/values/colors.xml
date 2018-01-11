@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorVersionText">#000000</color>
+    <color name="colorVersionAccent">#009688</color>
+    <color name="colorVersionBackground">#fff</color>
+
+</resources>

@@ -1,0 +1,7 @@
+<resources>
+
+    <string name="error_wrong_version_name_title">Número de versió incorrecte</string>
+    <string name="error_wrong_version_name_desc">La teva aplicació te un número de versió incorrecte.</string>
+    <string name="error_wrong_version_name_cancel">Cancel·lar</string>
+
+</resources>

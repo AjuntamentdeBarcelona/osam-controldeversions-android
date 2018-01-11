@@ -1,0 +1,7 @@
+<resources>
+
+    <string name="error_wrong_version_name_title">Wrong version number</string>
+    <string name="error_wrong_version_name_desc">Your app has an invalid version number.</string>
+    <string name="error_wrong_version_name_cancel">Cancel</string>
+
+</resources>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context="com.tempos21.versioncontrolapp.MainActivity">
+
+    <Button
+        android:id="@+id/button_main_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="From server response" />
+
+    <Button
+        android:id="@+id/button1_main_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="With Ok button" />
+
+    <Button
+        android:id="@+id/button2_main_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="With Ok and Cancel buttons" />
+
+    <Button
+        android:id="@+id/button3_main_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Without buttons" />
+
+    <Button
+        android:id="@+id/button4_main_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="With Cancel button" />
+
+    <Button
+        android:id="@+id/button5_main_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="From json file" />
+
+</LinearLayout>
