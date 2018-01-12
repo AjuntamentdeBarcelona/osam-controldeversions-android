@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void showMessageDialog() {
         AlertMessageService.showMessageDialog(this,
-                "http://dinamics.ccma.cat/public/apps/mobils/ccma_test/apps_mobils_ccma_test_avis_version_android.json",
+                "http://www.bcn.cat/mobil/apps/controlVersions/bustiaciutadana/versionControl_android.json",
                 LANGUAGE_TEST, new AlertMessageService.AlertDialogListener() {
                     @Override
                     public void onFailure(final Exception e) {
