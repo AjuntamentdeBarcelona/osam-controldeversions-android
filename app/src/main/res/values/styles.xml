@@ -8,4 +8,17 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+    <style name="GDPRAcceptButton">
+        <item name="android:background">#734583</item>
+        <item name="android:layout_margin">16dp</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="GDPR">
+        <item name="android:background">#000000</item>
+    </style>
+
 </resources>

@@ -5,16 +5,47 @@ import android.os.Parcelable;
 
 public class AlertMessageModel implements Parcelable {
 
+    public static final Parcelable.Creator<AlertMessageModel> CREATOR = new Parcelable.Creator<AlertMessageModel>() {
+
+        @Override
+        public AlertMessageModel createFromParcel(Parcel source) {
+            return new AlertMessageModel(source);
+        }
+
+        @Override
+        public AlertMessageModel[] newArray(int size) {
+            return new AlertMessageModel[size];
+        }
+    };
+
     private String version;
+
     private Integer comparisonMode;
+
     private String minSystemVersion;
+
     private String title;
+
     private String message;
+
     private String okButtonTitle;
+
     private String okButtonActionURL;
+
     private String cancelButtonTitle;
 
     public AlertMessageModel() {
+    }
+
+    private AlertMessageModel(Parcel in) {
+        version = in.readString();
+        comparisonMode = in.readInt();
+        minSystemVersion = in.readString();
+        okButtonActionURL = in.readString();
+        title = in.readString();
+        message = in.readString();
+        okButtonTitle = in.readString();
+        cancelButtonTitle = in.readString();
     }
 
     public String getVersion() {
@@ -96,30 +127,6 @@ public class AlertMessageModel implements Parcelable {
         dest.writeString(message);
         dest.writeString(okButtonTitle);
         dest.writeString(cancelButtonTitle);
-    }
-
-    public static final Parcelable.Creator<AlertMessageModel> CREATOR = new Parcelable.Creator<AlertMessageModel>() {
-
-        @Override
-        public AlertMessageModel createFromParcel(Parcel source) {
-            return new AlertMessageModel(source);
-        }
-
-        @Override
-        public AlertMessageModel[] newArray(int size) {
-            return new AlertMessageModel[size];
-        }
-    };
-
-    private AlertMessageModel(Parcel in) {
-        version = in.readString();
-        comparisonMode = in.readInt();
-        minSystemVersion = in.readString();
-        okButtonActionURL = in.readString();
-        title = in.readString();
-        message = in.readString();
-        okButtonTitle = in.readString();
-        cancelButtonTitle = in.readString();
     }
 
 }

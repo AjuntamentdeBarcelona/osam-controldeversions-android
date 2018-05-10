@@ -1,15 +1,13 @@
 apply plugin: 'com.android.library'
-apply plugin: 'android-apt'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    compileSdkVersion 27
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 23
-        versionCode 146
-        versionName "1.4.6"
+        targetSdkVersion 27
+        versionCode 150
+        versionName "1.5.0"
     }
     buildTypes {
         release {
@@ -21,11 +19,17 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'com.squareup.okhttp:okhttp:2.5.0'
-    compile 'com.google.code.gson:gson:2.4'
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'org.parceler:parceler-api:1.1.6'
-    apt 'org.parceler:parceler:1.1.6'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'com.android.support:customtabs:27.1.1'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:support-v4:27.1.1'
+
+    implementation 'com.squareup.okhttp:okhttp:2.7.5'
+    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'org.parceler:parceler-api:1.1.6'
+
+    testImplementation 'junit:junit:4.12'
+
+    annotationProcessor 'org.parceler:parceler:1.1.6'
 }
