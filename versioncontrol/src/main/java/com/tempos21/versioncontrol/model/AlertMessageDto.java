@@ -1,15 +1,30 @@
 package com.tempos21.versioncontrol.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class AlertMessageDto {
 
     private String version;
+
     private Integer comparisonMode;
+
     private String minSystemVersion;
+
     private Object title;
+
     private Object message;
+
     private Object okButtonTitle;
+
     private String okButtonActionURL;
+
     private Object cancelButtonTitle;
+
+    @SerializedName("legal_version")
+    private Integer legalVersion;
+
+    @SerializedName("legal_URL")
+    private String legalURL;
 
     public String getVersion() {
         return version;
@@ -75,4 +90,19 @@ public class AlertMessageDto {
         this.cancelButtonTitle = cancelButtonTitle;
     }
 
+    public Integer getLegalVersion() {
+        return legalVersion;
+    }
+
+    public void setLegalVersion(Integer legalVersion) {
+        this.legalVersion = legalVersion;
+    }
+
+    public String getLegalURL() {
+        return legalURL;
+    }
+
+    public void setLegalURL(String legalURL) {
+        this.legalURL = legalURL;
+    }
 }

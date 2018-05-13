@@ -10,7 +10,9 @@ import com.tempos21.versioncontrol.R;
 import com.tempos21.versioncontrol.mapper.AlertMessageMapper;
 import com.tempos21.versioncontrol.model.AlertMessageDto;
 import com.tempos21.versioncontrol.model.AlertMessageModel;
+import com.tempos21.versioncontrol.persistence.VersionControlPersistence;
 import com.tempos21.versioncontrol.ui.CustomAlertDialogFragment;
+import com.tempos21.versioncontrol.ui.GDPRDialogFragment;
 
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -289,7 +291,93 @@ public final class AlertMessageService {
         showVersionControlPopUp(context, listener, alertMessageModel);
     }
 
+    /**
+     * Creates dialog for GDPR EU Terms of Services
+     */
+    public static void startGdpr(final Context context,
+            String endpoint,
+            final String acceptButtonText,
+            final int customTabToolbarBackgroundColor,
+            final GdprListener listener) {
+        try {
+            final OkHttpClient client = new OkHttpClient();
+            final Request request = new Request.Builder().url(endpoint).build();
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Request request, IOException e) {
+                    runOnUiThread(e, listener);
+                }
+
+                @Override
+                public void onResponse(final Response response) {
+                    if (!response.isSuccessful()) {
+                        runOnUiThread(new IOException("Unexpected code " + response), listener);
+                    } else {
+                        AlertMessageDto alertMessageDto;
+                        try {
+                            alertMessageDto = new Gson().fromJson(response.body().string(), AlertMessageDto.class);
+
+                            showGdprDialog(context, alertMessageDto, acceptButtonText, customTabToolbarBackgroundColor, listener);
+
+                        } catch (Exception e) {
+                            runOnUiThread(e, listener);
+                        }
+                    }
+                }
+            });
+        } catch (final Exception e) {
+            runOnUiThread(e, listener);
+        }
+    }
+
+    private static void showGdprDialog(Context context, final AlertMessageDto alertMessageDto, final String acceptButtonText,
+            int customTabToolbarBackgroundColor, final GdprListener listener) {
+        final VersionControlPersistence persistence = new VersionControlPersistence(context);
+
+        if (persistence.getLastVersionAccepted() < alertMessageDto.getLegalVersion()) {
+            if (context instanceof AppCompatActivity) {
+                AppCompatActivity activity = (AppCompatActivity) context;
+
+                final GDPRDialogFragment dialogFragment = GDPRDialogFragment
+                        .newInstance(alertMessageDto.getLegalURL(), acceptButtonText, customTabToolbarBackgroundColor);
+                dialogFragment.show(activity.getSupportFragmentManager(), "GDPR_DIALOG");
+
+                dialogFragment.setOnAcceptGDPRListener(new GdprListener() {
+                    @Override
+                    public void onFailure(Exception e) {
+                        runOnUiThread(e, listener);
+                    }
+
+                    @Override
+                    public void onGdprAccepted() {
+                        persistence.setLastVersionAccepted(alertMessageDto.getLegalVersion());
+                        dialogFragment.dismiss();
+
+                        runOnUiThread(listener, false);
+                    }
+
+                    @Override
+                    public void onGdprDismissed() {
+                        runOnUiThread(listener, true);
+                    }
+                });
+            }
+        } else {
+            runOnUiThread(listener, false);
+        }
+    }
+
     private static void runOnUiThread(final Exception e, final AlertDialogListener listener) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                listener.onFailure(e);
+            }
+        });
+    }
+
+    private static void runOnUiThread(final Exception e, final GdprListener listener) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
@@ -307,11 +395,32 @@ public final class AlertMessageService {
         });
     }
 
+    private static void runOnUiThread(final GdprListener listener, final boolean dismissed) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                if (!dismissed) {
+                    listener.onGdprAccepted();
+                } else {
+                    listener.onGdprDismissed();
+                }
+            }
+        });
+    }
+
     public interface AlertDialogListener {
         void onFailure(Exception e);
 
         void onSuccess(boolean updateNeeded);
 
         void onAlertDialogDismissed();
+    }
+
+    public interface GdprListener {
+        void onFailure(Exception e);
+
+        void onGdprAccepted();
+
+        void onGdprDismissed();
     }
 }

@@ -25,4 +25,12 @@
         <item name="android:background">@color/colorVersionBackground</item>
     </style>
 
+    <style name="GDPRAcceptButton">
+        <item name="android:background">#FFFFFF</item>
+    </style>
+
+    <style name="GDPR">
+        <item name="android:background">#FFFFFF</item>
+    </style>
+
 </resources>
