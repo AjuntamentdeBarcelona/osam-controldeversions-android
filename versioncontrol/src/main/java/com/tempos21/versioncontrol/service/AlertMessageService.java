@@ -188,12 +188,12 @@ public final class AlertMessageService {
         int length = Math.max(appVersionParts.length, receivedVersionParts.length);
 
         for (int i = 0; i < length; i++) {
-            String appVersionPart = i < appVersionParts.length ? appVersionParts[i] : "0";
-            String receivedVersionPart = i < receivedVersionParts.length ? receivedVersionParts[i] : "0";
-            if (appVersionPart.compareTo(receivedVersionPart) < 0) {
+            int appVersionPart = i < appVersionParts.length ? Integer.parseInt(appVersionParts[i]) : 0;
+            int receivedVersionPart = i < receivedVersionParts.length ? Integer.parseInt(receivedVersionParts[i]) : 0;
+            if (appVersionPart < receivedVersionPart) {
                 return COMPARISON_RESULT_LT;
             }
-            if (appVersionPart.compareTo(receivedVersionPart) > 0) {
+            if (appVersionPart > receivedVersionPart) {
                 return COMPARISON_RESULT_GT;
             }
         }
