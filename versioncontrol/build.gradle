@@ -7,7 +7,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 27
         versionCode 20190318
-        versionName "1.5.6"
+        versionName "1.5.7"
     }
     buildTypes {
         release {
