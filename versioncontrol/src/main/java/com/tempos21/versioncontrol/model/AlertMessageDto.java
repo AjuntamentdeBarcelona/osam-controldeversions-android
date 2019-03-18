@@ -20,11 +20,11 @@ public class AlertMessageDto {
 
     private Object cancelButtonTitle;
 
-    @SerializedName("legal_version")
-    private Integer legalVersion;
+//    @SerializedName("legal_version")
+//    private Integer legalVersion;
 
-    @SerializedName("legal_URL")
-    private String legalURL;
+    @SerializedName("legalURL")
+    private Object legalURL;
 
     public String getVersion() {
         return version;
@@ -90,19 +90,19 @@ public class AlertMessageDto {
         this.cancelButtonTitle = cancelButtonTitle;
     }
 
-    public Integer getLegalVersion() {
-        return legalVersion;
-    }
+//    public Integer getLegalVersion() {
+//        return legalVersion;
+//    }
+//
+//    public void setLegalVersion(Integer legalVersion) {
+//        this.legalVersion = legalVersion;
+//    }
 
-    public void setLegalVersion(Integer legalVersion) {
-        this.legalVersion = legalVersion;
-    }
-
-    public String getLegalURL() {
+    public Object getLegalURL() {
         return legalURL;
     }
 
-    public void setLegalURL(String legalURL) {
+    public void setLegalURL(Object legalURL) {
         this.legalURL = legalURL;
     }
 }

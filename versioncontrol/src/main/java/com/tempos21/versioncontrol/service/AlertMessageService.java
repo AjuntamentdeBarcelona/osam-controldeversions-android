@@ -296,6 +296,7 @@ public final class AlertMessageService {
      */
     public static void startGdpr(final Context context,
             String endpoint,
+            final String language,
             final String acceptButtonText,
             final int customTabToolbarBackgroundColor,
             final GdprListener listener) {
@@ -318,7 +319,7 @@ public final class AlertMessageService {
                         try {
                             alertMessageDto = new Gson().fromJson(response.body().string(), AlertMessageDto.class);
 
-                            showGdprDialog(context, alertMessageDto, acceptButtonText, customTabToolbarBackgroundColor, listener);
+                            showGdprDialog(context, language, alertMessageDto, acceptButtonText, customTabToolbarBackgroundColor, listener);
 
                         } catch (Exception e) {
                             runOnUiThread(e, listener);
@@ -331,16 +332,17 @@ public final class AlertMessageService {
         }
     }
 
-    private static void showGdprDialog(Context context, final AlertMessageDto alertMessageDto, final String acceptButtonText,
+    private static void showGdprDialog(Context context, final String language, final AlertMessageDto alertMessageDto, final String acceptButtonText,
             int customTabToolbarBackgroundColor, final GdprListener listener) {
         final VersionControlPersistence persistence = new VersionControlPersistence(context);
+        AlertMessageModel alertMessageModel = new AlertMessageMapper().dataToModel(alertMessageDto, language);
 
-        if (persistence.getLastVersionAccepted() < alertMessageDto.getLegalVersion()) {
+//        if (persistence.getLastVersionAccepted() < alertMessageDto.getLegalVersion()) {
             if (context instanceof AppCompatActivity) {
                 AppCompatActivity activity = (AppCompatActivity) context;
 
                 final GDPRDialogFragment dialogFragment = GDPRDialogFragment
-                        .newInstance(alertMessageDto.getLegalURL(), acceptButtonText, customTabToolbarBackgroundColor);
+                        .newInstance(alertMessageModel.getLegalURL(), acceptButtonText, customTabToolbarBackgroundColor);
                 dialogFragment.show(activity.getSupportFragmentManager(), "GDPR_DIALOG");
 
                 dialogFragment.setOnAcceptGDPRListener(new GdprListener() {
@@ -351,7 +353,7 @@ public final class AlertMessageService {
 
                     @Override
                     public void onGdprAccepted() {
-                        persistence.setLastVersionAccepted(alertMessageDto.getLegalVersion());
+//                        persistence.setLastVersionAccepted(alertMessageDto.getLegalVersion());
                         dialogFragment.dismiss();
 
                         runOnUiThread(listener, false);
@@ -363,9 +365,9 @@ public final class AlertMessageService {
                     }
                 });
             }
-        } else {
-            runOnUiThread(listener, false);
-        }
+//        } else {
+//            runOnUiThread(listener, false);
+//        }
     }
 
     private static void runOnUiThread(final Exception e, final AlertDialogListener listener) {

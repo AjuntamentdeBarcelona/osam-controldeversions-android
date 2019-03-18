@@ -34,6 +34,8 @@ public class AlertMessageModel implements Parcelable {
 
     private String cancelButtonTitle;
 
+    private String legalURL;
+
     public AlertMessageModel() {
     }
 
@@ -112,6 +114,14 @@ public class AlertMessageModel implements Parcelable {
         this.cancelButtonTitle = cancelButtonTitle;
     }
 
+    public String getLegalURL() {
+        return legalURL;
+    }
+
+    public void setLegalURL(String legalURL) {
+        this.legalURL = legalURL;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -127,6 +137,7 @@ public class AlertMessageModel implements Parcelable {
         dest.writeString(message);
         dest.writeString(okButtonTitle);
         dest.writeString(cancelButtonTitle);
+        dest.writeString(legalURL);
     }
 
 }
