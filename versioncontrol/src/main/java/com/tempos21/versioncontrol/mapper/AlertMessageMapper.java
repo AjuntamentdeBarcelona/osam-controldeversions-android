@@ -47,6 +47,13 @@ public class AlertMessageMapper {
                 Map<String, String> cancelTitleMap = (Map) data.getCancelButtonTitle();
                 model.setCancelButtonTitle(getTextFromKey(language, cancelTitleMap));
             }
+            if (data.getLegalURL() instanceof String) {
+                model.setLegalURL((String) data.getLegalURL());
+            } else if (data.getLegalURL() instanceof Map) {
+                @SuppressWarnings("unchecked")
+                Map<String, String> legalURLMap = (Map) data.getLegalURL();
+                model.setLegalURL(getTextFromKey(language, legalURLMap));
+            }
         }
         return model;
     }

@@ -8,8 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
-import static com.tempos21.versioncontrol.ui.GDPRDialogFragment.NO_CUSTOM_TAB;
-
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -57,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             }
             case R.id.button6_main_activity: {
-                showGdprDialog();
+                showGdprDialog(LANGUAGE_TEST);
                 break;
             }
         }
@@ -106,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void showMessageDialog() {
         AlertMessageService.showMessageDialog(this,
-                "http://www.bcn.cat/mobil/apps/controlVersions/bustiaciutadana/versionControl_android.json",
+                "http://dinamics.ccma.cat/public/apps/mobils/ccma_test/apps_mobils_ccma_test_avis_version_android.json",
                 LANGUAGE_TEST, new AlertMessageService.AlertDialogListener() {
                     @Override
                     public void onFailure(final Exception e) {
@@ -126,11 +124,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
     }
 
-    private void showGdprDialog() {
+    private void showGdprDialog(String language) {
         AlertMessageService.startGdpr(this,
-                "https://api.myjson.com/bins/vu9ie",
+                "https://w9.bcn.cat/mobil/apps/controlVersions/butxaca/versionControl_android.json",
+                language,
                 "Aceptar",
-                NO_CUSTOM_TAB,
+                R.color.colorPrimary,
                 new AlertMessageService.GdprListener() {
                     @Override
                     public void onFailure(Exception e) {
