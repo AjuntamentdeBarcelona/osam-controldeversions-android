@@ -5,7 +5,7 @@
 ###How to use it?
 - Add these dependencies to your project:
 ```
-compile 'com.github.AjuntamentdeBarcelona:osam-controldeversions-android:1.5.1'
+compile 'com.github.AjuntamentdeBarcelona:osam-controldeversions-android:1.5.6'
 ```
 - Add this to your root build.gradle
 ```
