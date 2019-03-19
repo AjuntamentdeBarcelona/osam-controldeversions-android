@@ -128,7 +128,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AlertMessageService.startGdpr(this,
                 "https://w9.bcn.cat/mobil/apps/controlVersions/butxaca/versionControl_android.json",
                 language,
-                "Aceptar",
                 R.color.colorPrimary,
                 new AlertMessageService.GdprListener() {
                     @Override
