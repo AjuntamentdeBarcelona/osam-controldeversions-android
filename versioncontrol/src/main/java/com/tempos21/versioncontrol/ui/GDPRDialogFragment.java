@@ -39,18 +39,18 @@ public class GDPRDialogFragment extends DialogFragment {
 
     private WebView webView;
 
-    private Button accept;
+//    private Button accept;
 
     private android.support.v4.widget.ContentLoadingProgressBar progress;
 
     private AlertMessageService.GdprListener gdprListener;
 
-    public static GDPRDialogFragment newInstance(String webViewUrl, String acceptButtonText, int customTabBackgroundColor) {
+    public static GDPRDialogFragment newInstance(String webViewUrl, int customTabBackgroundColor) {
         GDPRDialogFragment gdprDialogFragment = new GDPRDialogFragment();
 
         Bundle bundle = new Bundle();
         bundle.putString(WEB_VIEW_URL_KEY, webViewUrl);
-        bundle.putString(BUTTON_TEXT_KEY, acceptButtonText);
+//        bundle.putString(BUTTON_TEXT_KEY, acceptButtonText);
         bundle.putInt(CUSTOM_TAB_BACKGROUND_COLOR_KEY, customTabBackgroundColor);
 
         gdprDialogFragment.setArguments(bundle);
@@ -67,7 +67,7 @@ public class GDPRDialogFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+                             @Nullable Bundle savedInstanceState) {
 
         final View view = inflater.inflate(R.layout.fragment_gdpr_dialog, container, false);
 
@@ -79,11 +79,11 @@ public class GDPRDialogFragment extends DialogFragment {
 
     private void initializeUI(View view) {
         webView = view.findViewById(R.id.webView);
-        accept = view.findViewById(R.id.accept);
+//        accept = view.findViewById(R.id.accept);
         progress = view.findViewById(R.id.progress);
 
         webView.loadUrl(getWebViewUrl(getArguments()));
-        accept.setText(getButtonText(getArguments()));
+//        accept.setText(getButtonText(getArguments()));
     }
 
     private void registerListeners() {
@@ -145,12 +145,12 @@ public class GDPRDialogFragment extends DialogFragment {
             }
         });
 
-        accept.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gdprListener.onGdprAccepted();
-            }
-        });
+//        accept.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                gdprListener.onGdprAccepted();
+//            }
+//        });
     }
 
     public void setOnAcceptGDPRListener(final AlertMessageService.GdprListener gdprListener) {
@@ -166,14 +166,14 @@ public class GDPRDialogFragment extends DialogFragment {
         throw new IllegalArgumentException("This fragment MUST be called with the webview url");
     }
 
-    private String getButtonText(@Nullable Bundle bundle) {
-        if (bundle != null) {
-            if (bundle.getString(BUTTON_TEXT_KEY) != null) {
-                return bundle.getString(BUTTON_TEXT_KEY);
-            }
-        }
-        throw new IllegalArgumentException("This fragment MUST be called with the accept button text");
-    }
+//    private String getButtonText(@Nullable Bundle bundle) {
+//        if (bundle != null) {
+//            if (bundle.getString(BUTTON_TEXT_KEY) != null) {
+//                return bundle.getString(BUTTON_TEXT_KEY);
+//            }
+//        }
+//        throw new IllegalArgumentException("This fragment MUST be called with the accept button text");
+//    }
 
     private int getCustomTabToolbarBackgroundColor(@Nullable Bundle bundle) {
         if (bundle != null) {

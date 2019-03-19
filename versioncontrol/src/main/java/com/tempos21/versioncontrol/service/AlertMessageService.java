@@ -207,7 +207,7 @@ public final class AlertMessageService {
      * @param endpoint the url of the web service API
      */
     private static void init(final Context context, final String endpoint, final String language,
-            final AlertDialogListener listener) {
+                             final AlertDialogListener listener) {
         try {
             final OkHttpClient client = new OkHttpClient();
             final Request request = new Request.Builder().url(endpoint).build();
@@ -271,7 +271,7 @@ public final class AlertMessageService {
      * @param dialogType int value of dialog type
      */
     public static void showMockMessageDialog(Context context, int dialogType, String language,
-            final AlertDialogListener listener) {
+                                             final AlertDialogListener listener) {
         AlertMessageDto alertMessageMock = new AlertMessageDto();
         alertMessageMock.setVersion("3.5.1");
         alertMessageMock.setComparisonMode(0);
@@ -295,11 +295,10 @@ public final class AlertMessageService {
      * Creates dialog for GDPR EU Terms of Services
      */
     public static void startGdpr(final Context context,
-            String endpoint,
-            final String language,
-            final String acceptButtonText,
-            final int customTabToolbarBackgroundColor,
-            final GdprListener listener) {
+                                 String endpoint,
+                                 final String language,
+                                 final int customTabToolbarBackgroundColor,
+                                 final GdprListener listener) {
         try {
             final OkHttpClient client = new OkHttpClient();
             final Request request = new Request.Builder().url(endpoint).build();
@@ -319,7 +318,7 @@ public final class AlertMessageService {
                         try {
                             alertMessageDto = new Gson().fromJson(response.body().string(), AlertMessageDto.class);
 
-                            showGdprDialog(context, language, alertMessageDto, acceptButtonText, customTabToolbarBackgroundColor, listener);
+                            showGdprDialog(context, language, alertMessageDto, customTabToolbarBackgroundColor, listener);
 
                         } catch (Exception e) {
                             runOnUiThread(e, listener);
@@ -332,39 +331,39 @@ public final class AlertMessageService {
         }
     }
 
-    private static void showGdprDialog(Context context, final String language, final AlertMessageDto alertMessageDto, final String acceptButtonText,
-            int customTabToolbarBackgroundColor, final GdprListener listener) {
+    private static void showGdprDialog(Context context, final String language, final AlertMessageDto alertMessageDto,
+                                       int customTabToolbarBackgroundColor, final GdprListener listener) {
         final VersionControlPersistence persistence = new VersionControlPersistence(context);
         AlertMessageModel alertMessageModel = new AlertMessageMapper().dataToModel(alertMessageDto, language);
 
 //        if (persistence.getLastVersionAccepted() < alertMessageDto.getLegalVersion()) {
-            if (context instanceof AppCompatActivity) {
-                AppCompatActivity activity = (AppCompatActivity) context;
+        if (context instanceof AppCompatActivity) {
+            AppCompatActivity activity = (AppCompatActivity) context;
 
-                final GDPRDialogFragment dialogFragment = GDPRDialogFragment
-                        .newInstance(alertMessageModel.getLegalURL(), acceptButtonText, customTabToolbarBackgroundColor);
-                dialogFragment.show(activity.getSupportFragmentManager(), "GDPR_DIALOG");
+            final GDPRDialogFragment dialogFragment = GDPRDialogFragment
+                    .newInstance(alertMessageModel.getLegalURL(), customTabToolbarBackgroundColor);
+            dialogFragment.show(activity.getSupportFragmentManager(), "GDPR_DIALOG");
 
-                dialogFragment.setOnAcceptGDPRListener(new GdprListener() {
-                    @Override
-                    public void onFailure(Exception e) {
-                        runOnUiThread(e, listener);
-                    }
+            dialogFragment.setOnAcceptGDPRListener(new GdprListener() {
+                @Override
+                public void onFailure(Exception e) {
+                    runOnUiThread(e, listener);
+                }
 
-                    @Override
-                    public void onGdprAccepted() {
+                @Override
+                public void onGdprAccepted() {
 //                        persistence.setLastVersionAccepted(alertMessageDto.getLegalVersion());
-                        dialogFragment.dismiss();
+                    dialogFragment.dismiss();
 
-                        runOnUiThread(listener, false);
-                    }
+                    runOnUiThread(listener, false);
+                }
 
-                    @Override
-                    public void onGdprDismissed() {
-                        runOnUiThread(listener, true);
-                    }
-                });
-            }
+                @Override
+                public void onGdprDismissed() {
+                    runOnUiThread(listener, true);
+                }
+            });
+        }
 //        } else {
 //            runOnUiThread(listener, false);
 //        }
