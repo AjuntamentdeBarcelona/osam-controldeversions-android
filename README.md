@@ -2,6 +2,147 @@
 [![](https://jitpack.io/v/AjuntamentdeBarcelona/osam-controldeversions-android.svg)](https://jitpack.io/#AjuntamentdeBarcelona/osam-controldeversions-android)
 # README
 
+# CA
+## Com es fa servir?
+- Afegeix aquesta dependència en el teu projecte:
+```
+compile 'com.github.AjuntamentdeBarcelona:osam-controldeversions-android:1.5.+'
+```
+- Afegir aquest codi al teu build.gradle
+```
+allprojects {
+    repositories {
+        jcenter()
+        maven { url "https://jitpack.io" }
+    }
+}
+```
+
+## Introducció
+
+Aquest mòdul mostrarà un avís quan el servei avisi que hi ha una nova versió de l'app.
+
+Aquesta alerta la podem mostrar amb un missatge i amb o sense botons de confirmació d'accions.
+
+Tindrem tres diferents tipus d'alerta:
+
+1. Alerta amb un missatge i / o un títol, sense botons que bloquejarà l'app completament.
+2. Alerta amb un missatge i / o un títol, amb botar d ' "ok" que un cop fet clic redirigirà l'usuari a una url.
+3. Alerta amb un missatge i / o un títol, amb botons de "ok" i "cancel". Si fem clic al botó de cancel·lar l'alerta desapareixerà, i si ho fem al de confirmar s'obrirà una url.
+
+## Descàrrega dels mòduls
+Des Osam es proporcionen mòduls per realitzar un conjunt de tasques comunes a totes les apps publicades per l'Ajuntament de Barcelona.
+
+El mòdul de Control de Versions (IOS / Android) està disponible com a repositori a:
+https://github.com/AjuntamentdeBarcelona/osam-controldeversions-android
+
+## Implementació
+Per crear el missatge d'alerta, únicament hem de cridar a la funció que descarregarà el json amb les variables ja definides i mostrarà l'alerta segons els valors rebuts:
+
+```
+AlertMessageService.showMessageDialog(Context context, String endpoint, String language, new AlertMessageService.AlertDialogOnNetworkErrorListener(){
+    @Override
+    public void onFailure(Exception error){}
+    
+    @Override
+    public void onSucces(boolean b){}
+    
+    @Override
+    public void onAlertDialogDismissed(){}
+});
+```
+
+A la funció se li ha de passar el context de l'app, una cadena de text amb la url on es troba el json amb la configuració desitjada, l'idioma en què es vol rebre la resposta i un listener perquè l'aplicació principal pugui reaccionar en cas que la crida al servidor d'un error o si a part de la funcionalitat que ofereix la llibreria, es vol afegir alguna funcionalitat més pròpia de l'aplicació.
+
+Per exemple: Es vol enviar un event si l'usuari cancel·la el AlertDialog. Llavors en el ( "onAlertDialogDismissed") es posaria l'enviament del event corresponent.
+
+Si volem canviar el color del pop-up podem sobreescriure els colors simplement definint els següents <color> dins el fitxer colors.xml de l'app que utilitzi la llibreria:
+    
+<!-- Color title/desc -->
+    <color name="colorVersionText">#000000</color>
+<!-- Color buttons Cancel/Accept -->
+    <color name="colorVersionAccent">#009688</color>
+<!-- Color background -->
+    <color name="colorVersionBackground">#fff</color>
+    
+## Minificación i ofuscació en Android
+Quan s'aplica la minifiación i ofuscació del codi font, s'han d'afegir unes línies al fitxer Proguard per mantenir algunes classes necessàries per al funcionament de la llibreria.
+- Gson
+- -keep class sun.misc.Unsafe {*; }
+- -keep class com.tempos21.versioncontrol.model.AlertMessageDto {*; }
+
+## Format fitxer JSON
+```
+    {
+        "version": "2.1.1",
+        "comparisonMode": "0",
+        "minSystemVersion": "5.0",
+        "title": {
+            "es": "Título de la alerta",
+            "cat": "Títol de la alerta",
+            "en": "Alert title"
+        },
+        "message": {
+           "es": "Prueba en castellano.",
+           "cat": "Prova en català.",
+           "en": "Test in english."
+       },
+      "okButtonTitle": {
+          "es": "Vale",
+          "cat": "Val",
+          "en": "Ok"
+     },
+     "cancelButtonTitle": {
+          "es": "Cancelar",
+          "cat": "Cancel·lar",
+          "en": "Cancel"
+     },
+     "okButtonActionURL": "http://www.apple.com <http://www.apple.com/> "
+   }
+```
+
+## Paràmetres
+- versio
+    - Obligatori
+    - Especifica la versió mínima de l'aplicació que volem que es comprovi, per a totes aquelles versions menors (estrictament) a aquesta, es mostrarà l'alerta de control de versió i per a la resta no es mostrarà res.
+- comparisonMode
+    - Obligatori
+    - Especifica la manera de comparació de la versió de l'app amb el mòdul
+- minSystemVersion
+    - Obligatori
+    - Especifica a partir que versió del sistema es mostrarà l'alerta.
+- title
+    - Obligatori
+    - Títol de l'alerta en el cas que s'hagi de mostrar.
+- message
+    - Obligatori
+    - Missatge de l'alerta en cas que s'hagi de mostrar.
+- okButtonTitle
+    - Opcional
+    - Títol del botó d'acceptar.
+    - Si es rep aquest paràmetre juntament amb el paràmetre okButtonActionURL, es mostrarà en l'alerta un botó d'acceptar que obrirà el link que s'ha especificat en el paràmetre okButtonActionURL.
+- okButtonActionURL
+    - Opcional
+    - Link que s'obrirà quan l'usuari seleccioni el botó d'acceptar. Per exemple: link de la nova versió de l'aplicació a l'App Store / Google Play.
+    - Si es rep aquest paràmetre juntament amb el paràmetre okButtonTitle, es mostrarà en l'alerta un botó d'acceptar que obrirà el link que s'hagi especificat.
+- cancelButtonTitle
+    - Opcional
+    - Títol del botó de cancel·lar.
+    - Si es rep aquest paràmetre es mostrarà en l'alerta un botó de cancel·lar que permetrà a l'usuari tancar l'alerta i continuar utilitzant l'aplicació amb normalitat.
+  
+  
+## Com funciona el mòdul de control de versions
+Depenent del valor del paràmetre "comparisonMode" mostrarem l'alerta.
+
+Aquest paràmetre compararà la versió instal·lada amb la qual rebem del json, en funció de tres valors:
+
+  0. -> Mostra l'alerta a les apps amb un nombre de versió menor que el rebut de l'json
+  1. -> Mostra l'alerta en les apps que tinguin el mateix valor que el rebut de l'json
+  2. -> Mostra l'alerta en les apps amb un nombre de versió major que el rebut de l'json
+
+A més, es comprovarà que la versió del SO sigui com a mínim la indicada en el fitxer de configuració.
+  
+# ES
 ## ¿Cómo se usa?
 - Añade esta dependencia en tu proyecto:
 ```
